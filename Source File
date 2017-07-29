@@ -4,6 +4,8 @@ SoftwareSerial bluetooth(0,1);
 #define Kp 20
 #define Kd 5
 #define Ki 0.5
+#define p A1
+#define d A2
 const int MPU_addr=0x68;
 int16_t AcX,AcY,AcZ,Tmp,GyX,GyY,GyZ;
 int c,mode, angle;
@@ -30,12 +32,16 @@ Serial.begin(19200);
 bluetooth.begin(9600);
 pinMode(5, OUTPUT);
 pinMode(6, OUTPUT);
+pinMode(2, INPUT);
+pinMode(3, INPUT);
 //pinMode(7, OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 //int accel = bluecon(mode);
+int kpv = analogRead(2);
+int kdv = analogRead(3);
 Wire.beginTransmission(MPU_addr);
   Wire.write(0x3B);
   Wire.endTransmission(false);
@@ -75,6 +81,10 @@ void motor(boolean dir)                        //Motor control
 
 int PIDi(int PWM)                             //PID control
 {
+  if (kpv = Kp || kdv = Kd)
+  {kpv = Kp;
+  kdv = Kd;
+  }
   float lasttime=0;
   float errsum=0;
   float derror=0;
